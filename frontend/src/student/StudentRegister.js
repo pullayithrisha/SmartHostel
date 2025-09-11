@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { UserPlus, Eye, EyeOff, User, Mail, Lock, Home, Phone, Users, X } from 'lucide-react';
+import axios from "axios";
 
 const StudentRegister = ({ show, onClose, onSwitchToLogin }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -30,16 +31,29 @@ const StudentRegister = ({ show, onClose, onSwitchToLogin }) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     for (const key in formData) {
       if (!formData[key]) {
-        alert('Please fill all fields.');
+        alert("Please fill all fields.");
         return;
       }
     }
-    alert('Student registration successful!');
-    onClose();
+
+    try {
+      const response = await axios.post("http://localhost:5000/students/register", formData);
+      alert("Student registration successful!");
+      console.log("Register response:", response.data);
+      onClose();
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.message) {
+        alert(error.response.data.message);
+      } else {
+        alert("Server error during registration");
+      }
+      console.error("Registration error:", error);
+    }
   };
 
   if (!show) return null;

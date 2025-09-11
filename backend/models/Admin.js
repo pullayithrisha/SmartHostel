@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const adminSchema = new mongoose.Schema({
-  hostelId: { type: String, unique: true, required: true },
+  hostelId: { type: Number, unique: true, required: true },
   name: { type: String, required: true },
   email: { type: String, unique: true, required: true },
   password: { type: String, required: true },
@@ -10,4 +10,4 @@ const adminSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 const Admin = mongoose.model("Admin", adminSchema);
-export default Admin;
+module.exports = Admin;

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { User, Mail, Lock, Home, MapPin } from "lucide-react";
+import axios from "axios";
 
 const colors = {
   primary: '#7c3aed',
@@ -22,25 +23,25 @@ const AdminRegister = ({ show, onClose, onSwitchToLogin }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    for (const key in form) if (!form[key].trim()) return alert("Please fill all fields.");
+
+    for (const key in form) {
+      if (!form[key].trim()) {
+        alert("Please fill all fields.");
+        return;
+      }
+    }
 
     try {
-      const res = await fetch("http://localhost:5000/admin/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form)
-      });
-      const data = await res.json();
-
-      if (res.ok) {
-        alert(`Registration successful! Your Hostel ID: ${data.hostelId}`);
-        onClose();
+      const response = await axios.post("http://localhost:5000/admin/register", form);
+      alert(`Registration successful! Your Hostel ID: ${response.data.hostelId}`);
+      onClose();
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.message) {
+        alert(error.response.data.message);
       } else {
-        alert(data.message);
+        alert("Something went wrong");
       }
-    } catch (err) {
-      console.error(err);
-      alert("Something went wrong");
+      console.error("Registration error:", error);
     }
   };
 
