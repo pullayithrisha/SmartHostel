@@ -1,28 +1,25 @@
-import cors from "cors";
-import express from "express";
-import mongoose from "mongoose";
-import dotenv from "dotenv";
-import adminRoutes from "./routes/adminRoutes.js";
+const express = require("express");
+const cors = require("cors");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+
+const adminRoutes = require("./routes/adminRoutes");
+const studentRoute = require("./routes/studentRoute");
 
 dotenv.config();
+
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
-// ✅ Allow React frontend (http://localhost:3000)
-app.use(cors({
-  origin: "http://localhost:3000",
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"]
-}));
-
-// Routes
 app.use("/admin", adminRoutes);
+app.use("/students", studentRoute);
 
-// DB + Server
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("✅ MongoDB connected"))
-  .catch(err => console.error("❌ MongoDB connection error:", err));
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB connected"))
+  .catch((err) => console.error("MongoDB connection error:", err));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

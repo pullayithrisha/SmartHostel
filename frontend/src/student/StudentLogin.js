@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Users, Eye, EyeOff, Mail, Lock, LogIn, X } from 'lucide-react';
+import axios from "axios";
 
 const StudentLogin = ({ show, onClose, onSwitchToRegister }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -24,11 +25,22 @@ const StudentLogin = ({ show, onClose, onSwitchToRegister }) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Student login data:', formData);
-    alert('Student login successful!');
-    onClose();
+    try {
+      const response = await axios.post("http://localhost:5000/students/login", formData);
+      alert("Student login successful!");
+      console.log("Login response:", response.data);
+      onClose();
+      // Optionally store tokens or session info here
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.message) {
+        alert(error.response.data.message);
+      } else {
+        alert("Server error during login");
+      }
+      console.error("Login error:", error);
+    }
   };
 
   if (!show) return null;
