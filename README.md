@@ -32,7 +32,6 @@ SmartHostel is a comprehensive, modern hostel management system featuring dedica
 - **MongoDB**: NoSQL database for flexible data modeling (using Mongoose).
 - **JWT (JSON Web Tokens)**: Secure authentication and role-based access control.
 - **Bcrypt**: Password hashing for secure user credential storage.
-- **Nodemailer**: Automated email notifications and updates.
 
 ## Getting Started
 
@@ -53,7 +52,7 @@ SmartHostel is a comprehensive, modern hostel management system featuring dedica
    cd backend
    npm install
    ```
-   Create a `.env` file in the `backend` directory based on the configuration needs (e.g., `MONGO_URI`, `JWT_SECRET`, email credentials).
+   Create a `.env` file in the `backend` directory based on the configuration needs (e.g., `MONGO_URI`, `JWT_SECRET`).
    Start the server: `npm start`
 
 3. Setup Frontend:
